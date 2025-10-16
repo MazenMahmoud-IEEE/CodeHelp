@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CodeHelp Chat</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="chat-container">
+    <h1>CodeHelp Assistant</h1>
+
+    <!-- API Key popup -->
+    {% if not api_key_set %}
+    <div id="api-popup" class="popup">
+        <form id="api-form">
+            <input type="text" name="api_key" placeholder="Enter OpenRouter API Key" required>
+            <button type="submit">Save Key</button>
+        </form>
+    </div>
+    {% endif %}
+
+    <div id="chat-box" class="chat-box">
+        {% for msg in chat_history %}
+            <div class="message user">You: {{ msg.user }}</div>
+            <div class="message bot">Bot: {{ msg.bot }}</div>
+        {% endfor %}
+    </div>
+
+    <form id="chat-form">
+        <input type="text" name="user_input" placeholder="Type your message..." required>
+        <button type="submit">Send</button>
+    </form>
+</div>
+
+<script>
+const apiForm = document.getElementById("api-form");
+if (apiForm) {
+    apiForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const apiKey = apiForm.querySelector("input[name='api_key']").value;
+        await fetch("/set_api_key", {
+            method: "POST",
+            body: new URLSearchParams({api_key: apiKey})
+        });
+        document.getElementById("api-popup").style.display = "none"; // hide popup
+        alert("✅ API Key saved!");
+    });
+}
+
+const chatForm = document.getElementById("chat-form");
+const chatBox = document.getElementById("chat-box");
+
+chatForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const input = chatForm.querySelector("input[name='user_input']");
+    const message = input.value;
+    input.value = "";
+
+    // Show user message
+    const userDiv = document.createElement("div");
+    userDiv.className = "message user";
+    userDiv.textContent = "You: " + message;
+    chatBox.appendChild(userDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // Send to backend
+    const formData = new URLSearchParams();
+    formData.append("user_input", message);
+    const response = await fetch("/chat", { method: "POST", body: formData });
+    const html = await response.text();
+
+    // Render updated chat
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = html;
+    const botMessages = tempDiv.querySelectorAll(".message.bot");
+    botMessages.forEach(msg => chatBox.appendChild(msg));
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+</script>
+</body>
+</html>
