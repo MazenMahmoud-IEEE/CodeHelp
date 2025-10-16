@@ -1,7 +1,4 @@
-
 # CodeHelp – AI Chat Assistant MVP
-
-![CodeHelp Logo](https://via.placeholder.com/300x80?text=CodeHelp)
 
 **CodeHelp** is an AI-powered chat assistant built using **LangGraph, FastAPI, and Chroma memory**. This project demonstrates an MVP (Minimum Viable Product) of a ChatGPT-like interface designed for experimentation with RAG (Retrieval-Augmented Generation) and conversational AI.
 
@@ -132,17 +129,34 @@ python main.py
 CodeHelp/
 │
 ├─ app/
+│  ├─ llm/
+│  │  ├─ interface.py
+│  │  └─ router.py
 │  ├─ memory/
-│  │  ├─ session_memory.py
-│  │  └─ chroma_memory.py
+│  │  ├─ chroma_memory.py
+│  │  └─ session_memory.py
+│  ├─ prompts/
+│  │  └─ prompts.py
 │  ├─ retrieval/
-│  │  └─ embeddings.py
-│  └─ utils/
-│     └─ langgraph_setup.py
+│  │  ├─ embeddings.py
+│  │  ├─ knowledge_base.py
+│  │  └─ retriever.py
+│  ├─ utils/
+│  │  ├─ langgraph_setup.py
+│  │  └─ testing_utils.py
+│  └─ __init__.py
 │
 ├─ config/
 │  ├─ constants.py
-│  └─ settings.py
+│  ├─ settings.py
+│  └─ __init__.py
+│
+├─ data/
+│
+├─ logs/
+│  ├─ chat/
+│  ├─ explanation/
+│  └─ generation/
 │
 ├─ static/
 │  └─ style.css
@@ -151,12 +165,13 @@ CodeHelp/
 │  └─ index.html
 │
 ├─ main.py
-└─ README.md
+├─ requirements.txt
+├─ README.md
+└─ .gitattributes
 ```
 
 ---
 
 ## License
 
-MIT License © 
-
+MIT License © Mazen Mahmoud
