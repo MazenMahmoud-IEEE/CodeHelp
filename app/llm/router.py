@@ -6,8 +6,8 @@ import requests
 
 def llm_router(
     prompt: str,
-    model: str = "deepseek/deepseek-r1:free",
-    max_tokens: int = 512,
+    model: str = "deepseek/deepseek-r1",
+    max_tokens: int = 256,
     temperature: float = 0.2
 ) -> str:
     """
