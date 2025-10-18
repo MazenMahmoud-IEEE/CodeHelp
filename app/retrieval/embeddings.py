@@ -92,4 +92,4 @@ def reload_chroma_vectorstore(embed_model_name: str = "sentence-transformers/all
 
     print("✅ Loaded Chroma collection from disk:", persist_directory)
     print("✅ Embedding model ready:", embed_model_name)
-    return chroma_collection, embed_model, embedding_function
+    return chroma_collection
