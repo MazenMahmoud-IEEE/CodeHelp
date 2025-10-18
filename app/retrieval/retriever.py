@@ -4,7 +4,12 @@ def retrieve_context_from_chroma(query: str, chroma_collection, k: int = 8) -> s
     Returns formatted text ready to be inserted into a prompt.
     """
     try:
+        # ✅ Safety check in case something unexpected is returned
+        if isinstance(chroma_collection, tuple):
+            chroma_collection = chroma_collection[0]
+
         results = chroma_collection.similarity_search_with_score(query, k=k)
+
     except Exception as e:
         print(f"⚠️ Retrieval failed: {e}")
         return ""
@@ -20,5 +25,4 @@ def retrieve_context_from_chroma(query: str, chroma_collection, k: int = 8) -> s
             f"Example task:\n{prompt_text.strip()}\n\nExample solution:\n{snippet.strip()}\n"
         )
 
-    context_text = "\n\n".join(context_pieces)
-    return context_text.strip()
+    return "\n\n".join(context_pieces).strip()
